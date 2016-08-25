@@ -12,8 +12,16 @@ public class TileScript: MonoBehaviour {
 	Vector3 pointStart;
 	Vector3 pointFinish;
 
-	float transitionTime = 0;
+	MeshRenderer render;
+	Material material;
 
+	Color32 color;
+
+	public float doit;
+	int alpha;
+	public float dist=1;
+	float transitionTime = 0;
+	public float porcentagemInicialDeTransparencia = 0;
 	public float transitionSpeed = 1.0f;
 	public float transitionAcceleration = 0.01f;
 	public transitionState transition = transitionState.UP;
@@ -28,9 +36,29 @@ public class TileScript: MonoBehaviour {
 		return pointFinish;
 	}
 
+	public void setTransparency(float a)
+	{
+		//Altera a transparência do objeto. 1 é completamente sólido e 0 completamente transparente.
+		if(a>1) a = 1;
+		else if (a<0) a = 0;
+		alpha = (int)(a*255);
+		color.a=(byte)alpha;
+		material.SetColor("_Color", color);
+	}
+
+	public void setPercentageTransparency()
+	{
+		doit = dist-getDistanceToFinish();
+		setTransparency(doit/dist);
+	}
+
 	public void finishTransition()
 	{
+		setTransparency(1);
+		material.SetFloat("_Mode",0f);
+		transform.position=pointFinish;
 		transition=transitionState.DONE;
+		Destroy(this);
 	}
 
 	public float getTransitionSpeed()
@@ -55,9 +83,28 @@ public class TileScript: MonoBehaviour {
 		transitionTime += t;
 	}
 
+	public float getDistanceToFinish()
+	{
+		return Mathf.Sqrt((transform.position.x - pointFinish.x) * (transform.position.x - pointFinish.x) +
+						  (transform.position.y - pointFinish.y) * (transform.position.y - pointFinish.y) + 
+						  (transform.position.z - pointFinish.z) * (transform.position.z - pointFinish.z));
+	}
 
 	void Start()
 	{
+		render = gameObject.GetComponent<MeshRenderer>();
+		material = render.material;
+		color=material.GetColor("_Color");
+		material.SetFloat("_Mode",4f);
+
+		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+		material.SetInt("_ZWrite", 0);
+		material.DisableKeyword("_ALPHATEST_ON");
+		material.EnableKeyword("_ALPHABLEND_ON");
+		material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+		material.renderQueue = 3000;
+		setTransparency(0);
 		if (getTransitionState() != transitionState.DONE)
 		{
 			pointFinish = transform.position;
@@ -69,6 +116,10 @@ public class TileScript: MonoBehaviour {
 
 			transform.position = pointStart;
 		}
+
+		dist=Mathf.Sqrt((pointStart.x - pointFinish.x) * (pointStart.x - pointFinish.x) + 
+						(pointStart.y - pointFinish.y) * (pointStart.y - pointFinish.y) +
+						(pointStart.z - pointFinish.z) * (pointStart.z - pointFinish.z));
 	}
 
 }

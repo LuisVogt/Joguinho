@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour {
 			if(tempChild.GetComponent<TileScript>().getTransitionState()!=TileScript.transitionState.DONE)
 			{
 				tempPointFinish = tempChild.GetComponent<TileScript>().getPointFinish();
-				tempSpeed = tempChild.GetComponent<TileScript>().getTransitionSpeed();
+				tempSpeed = tempChild.GetComponent<TileScript>().getTransitionSpeed() * Time.deltaTime;
 			}
 			if(tempChild.GetComponent<TileScript>().getTransitionState() == TileScript.transitionState.UP)
 			{
@@ -31,6 +31,7 @@ public class LevelManager : MonoBehaviour {
 				{
 					tempChild.transform.position = Vector3.MoveTowards(tempChild.transform.position,tempPointFinish,tempSpeed);	
 					tempChild.GetComponent<TileScript>().addTransitionTime(Time.deltaTime);
+					tempChild.GetComponent<TileScript>().setPercentageTransparency();
 				}
 			}
 		}
