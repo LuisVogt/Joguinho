@@ -3,7 +3,6 @@ using System.Collections;
 
 
 public class TileScript: MonoBehaviour {
-
 	//O enum transitionState indica de onde o bloco aparece na transição.
 	public enum transitionState {DONE,UP,DOWN};
 	public enum transitionSpeedType {LINEAR,ACCELERATION};
@@ -11,6 +10,9 @@ public class TileScript: MonoBehaviour {
 	//cenários, pointFinish é o ponto onde o bloco está no editor.
 	Vector3 pointStart;
 	Vector3 pointFinish;
+
+	Transform[] child;
+	public bool hasChild=false;
 
 	MeshRenderer render;
 	Material material;
@@ -26,6 +28,18 @@ public class TileScript: MonoBehaviour {
 	public float transitionAcceleration = 0.01f;
 	public transitionState transition = transitionState.UP;
 	public transitionSpeedType speedType = transitionSpeedType.ACCELERATION;
+
+	public bool Falling = false;
+
+	public bool isFalling()
+	{
+		return Falling;
+	}
+
+	public void startFall()
+	{
+		Falling = true;
+	}
 	public transitionState getTransitionState()
 		{
 			return transition;
@@ -41,9 +55,18 @@ public class TileScript: MonoBehaviour {
 		//Altera a transparência do objeto. 1 é completamente sólido e 0 completamente transparente.
 		if(a>1) a = 1;
 		else if (a<0) a = 0;
-		alpha = (int)(a*255);
-		color.a=(byte)alpha;
-		material.SetColor("_Color", color);
+		int temp;
+		if(hasChild) temp = transform.childCount;
+		else temp = 1;
+		for(int i = 0; i < temp;i++){
+			if(hasChild) render = transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
+			else render = gameObject.GetComponent<MeshRenderer>();
+			material = render.material;
+			color=material.GetColor("_Color");
+			alpha = (int)(a*255);
+			color.a=(byte)alpha;
+			material.SetColor("_Color", color);
+		}
 	}
 
 	public void setPercentageTransparency()
@@ -92,19 +115,28 @@ public class TileScript: MonoBehaviour {
 
 	void Start()
 	{
-		render = gameObject.GetComponent<MeshRenderer>();
-		material = render.material;
-		color=material.GetColor("_Color");
-		material.SetFloat("_Mode",4f);
+		int temp;
+		if(transform.childCount>0) {
+			temp = transform.childCount;
+			hasChild = true;
+		}
+		else temp=1;
+		for(int i = 0; i < temp;i++){
+			if(hasChild) render = transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
+			else render = gameObject.GetComponent<MeshRenderer>();
+			material = render.material;
+			color=material.GetColor("_Color");
+			material.SetFloat("_Mode",4f);
 
-		material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		material.SetInt("_ZWrite", 0);
-		material.DisableKeyword("_ALPHATEST_ON");
-		material.EnableKeyword("_ALPHABLEND_ON");
-		material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-		material.renderQueue = 3000;
-		setTransparency(0);
+			material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+			material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+			material.SetInt("_ZWrite", 0);
+			material.DisableKeyword("_ALPHATEST_ON");
+			material.EnableKeyword("_ALPHABLEND_ON");
+			material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+			material.renderQueue = 3000;
+			setTransparency(0);
+		}
 		if (getTransitionState() != transitionState.DONE)
 		{
 			pointFinish = transform.position;

@@ -31,7 +31,7 @@ public class PrefabReplicator : MonoBehaviour {
 				{
 					for(int z = 0; z < Mathf.Abs(point.z)+1; z++)
 					{
-						temp = Instantiate(prefabby, new Vector3(x*dist*Mathf.Sign(point.x),y*dist*Mathf.Sign(point.y),z*dist*Mathf.Sign(point.z)), 
+						temp = Instantiate(prefabby, new Vector3(x*dist*Mathf.Sign(point.x)+initPoint.x,y*dist*Mathf.Sign(point.y)+initPoint.y,z*dist*Mathf.Sign(point.z)+initPoint.z), 
 						Quaternion.identity, this.transform) as GameObject;
 					}
 				}

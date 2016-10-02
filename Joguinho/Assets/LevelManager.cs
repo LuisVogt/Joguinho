@@ -1,37 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
+	public float playerDistanceToFall = 5.0f;
 	Transform tempChild;
+	GameObject[] TransicaoVector;
+	GameObject Player;
 	Vector3 tempPointFinish;
 	float tempSpeed;
 	// Use this for initialization
 	void Start () {
-	
+		Player = GameObject.FindGameObjectWithTag("Player");
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		for (int i = 0; i < transform.childCount; i++)
+		TransicaoVector = GameObject.FindGameObjectsWithTag("Transição");
+		if(TransicaoVector.Length > 0)
 		{
-			tempChild = transform.GetChild(i);
-			if(tempChild.GetComponent<TileScript>().getTransitionState()!=TileScript.transitionState.DONE)
+			foreach(GameObject go in TransicaoVector)
 			{
-				tempPointFinish = tempChild.GetComponent<TileScript>().getPointFinish();
-				tempSpeed = tempChild.GetComponent<TileScript>().getTransitionSpeed() * Time.deltaTime;
-			}
-			if(tempChild.GetComponent<TileScript>().getTransitionState() == TileScript.transitionState.UP)
-			{
-				if(tempChild.transform.position.y <= tempPointFinish.y)
+				tempChild = go.transform;
+				if((Vector3.Distance(tempChild.position,Player.transform.position) < playerDistanceToFall))
 				{
-					tempChild.transform.position = tempPointFinish;
-					tempChild.GetComponent<TileScript>().finishTransition();
+					tempChild.GetComponent<TileScript>().startFall();
 				}
-				else
+				if(tempChild.GetComponent<TileScript>().isFalling())
 				{
-					tempChild.transform.position = Vector3.MoveTowards(tempChild.transform.position,tempPointFinish,tempSpeed);	
-					tempChild.GetComponent<TileScript>().addTransitionTime(Time.deltaTime);
-					tempChild.GetComponent<TileScript>().setPercentageTransparency();
+					if(tempChild.GetComponent<TileScript>().getTransitionState()!=TileScript.transitionState.DONE)
+					{
+						tempPointFinish = tempChild.GetComponent<TileScript>().getPointFinish();
+						tempSpeed = tempChild.GetComponent<TileScript>().getTransitionSpeed() * Time.deltaTime;
+					}
+					if(tempChild.GetComponent<TileScript>().getTransitionState() == TileScript.transitionState.UP)
+					{
+						if(tempChild.transform.position.y <= tempPointFinish.y)
+						{
+							tempChild.transform.position = tempPointFinish;
+							tempChild.GetComponent<TileScript>().finishTransition();
+							go.tag="Untagged";
+						}
+						else
+						{
+							tempChild.transform.position = Vector3.MoveTowards(tempChild.transform.position,tempPointFinish,tempSpeed);	
+							tempChild.GetComponent<TileScript>().addTransitionTime(Time.deltaTime);
+							tempChild.GetComponent<TileScript>().setPercentageTransparency();
+						}
+					}
 				}
 			}
 		}
