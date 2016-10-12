@@ -5,7 +5,7 @@ public class Player : MonoBehaviour {
 
 	public float baseSpeed;
 	public float gravity;
-	private bool isGrounded;
+	public bool isGrounded;
 	private float verticalSpeed;
 	private float horizontalSpeed;
 	private Vector3 direction;
@@ -14,13 +14,22 @@ public class Player : MonoBehaviour {
 	{
 		isGrounded = true;
 		verticalSpeed = 0.0f;
-	}
+		Ray myRay = other.transform.position - transform.position;
+		RaycastHit hit;
+		Physics.Raycast(myRay,out hit);
+		//transform.position = transform.position + hit.normal * other.contactOffset;
+		//Ray myRay = other.transform.position - transform.position;
+		//RaycastHit myRayHit;
+//		Physics.Raycast (myRay,out myRayHit);
 
+//		transform.position = transform.position * other.contactOffset;
+	}
+		
 	// Use this for initialization
 	void Start () {
 		direction = new Vector3(0.0f,1.0f,0.0f);
 		horizontalSpeed = 0.0f;
-		isGrounded = true;
+		isGrounded = false;
 	}
 
 	void InputControl()
@@ -33,7 +42,8 @@ public class Player : MonoBehaviour {
 
 	void Move ()
 	{
-		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.deltaTime);
+//		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.deltaTime);
+		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.fixedDeltaTime);
 
 		if (isGrounded && Input.GetButton("Jump"))
 		{
@@ -42,15 +52,24 @@ public class Player : MonoBehaviour {
 		}
 		if(isGrounded == false)
 		{
-			verticalSpeed = verticalSpeed - gravity * Time.deltaTime;
-			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.deltaTime,0.0f);
+//			verticalSpeed = verticalSpeed - gravity * Time.deltaTime;
+			verticalSpeed = verticalSpeed - gravity * Time.fixedDeltaTime;
+//			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.deltaTime,0.0f);
+			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.fixedDeltaTime,0.0f);
+
 		}
 		direction=new Vector3(0.0f,0.0f,0.0f);
 	}
 
+	void FixedUpdate()
+	{
+		InputControl();
+		Move ();
+	}
+
 	// Update is called once per frame
 	void Update () {
-		InputControl();
-		Move();
+//		InputControl();
+//		Move();
 	}
 }

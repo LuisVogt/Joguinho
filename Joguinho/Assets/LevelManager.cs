@@ -14,9 +14,9 @@ public class LevelManager : MonoBehaviour {
 		Player = GameObject.FindGameObjectWithTag("Player");
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void manageFallingBlocks()
+	{
 		TransicaoVector = GameObject.FindGameObjectsWithTag("Transição");
 		if(TransicaoVector.Length > 0)
 		{
@@ -52,5 +52,10 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	// Update is called once per frame
+	void Update () {
+		manageFallingBlocks ();
 	}
 }
