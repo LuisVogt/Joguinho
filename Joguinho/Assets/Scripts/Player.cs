@@ -6,23 +6,18 @@ public class Player : MonoBehaviour {
 	public float baseSpeed;
 	public float gravity;
 	public bool isGrounded;
-	private float verticalSpeed;
-	private float horizontalSpeed;
-	private Vector3 direction;
+    [SerializeField] private float verticalSpeed;
+    [SerializeField] private float horizontalSpeed;
+	[SerializeField] private Vector3 direction;
+    private float distToBottom;
+    private float distToX;
+    private float distToZ;
+
 
 	void OnTriggerEnter(Collider other)
 	{
 		isGrounded = true;
 		verticalSpeed = 0.0f;
-		Ray myRay = other.transform.position - transform.position;
-		RaycastHit hit;
-		Physics.Raycast(myRay,out hit);
-		//transform.position = transform.position + hit.normal * other.contactOffset;
-		//Ray myRay = other.transform.position - transform.position;
-		//RaycastHit myRayHit;
-//		Physics.Raycast (myRay,out myRayHit);
-
-//		transform.position = transform.position * other.contactOffset;
 	}
 		
 	// Use this for initialization
@@ -30,7 +25,27 @@ public class Player : MonoBehaviour {
 		direction = new Vector3(0.0f,1.0f,0.0f);
 		horizontalSpeed = 0.0f;
 		isGrounded = false;
+
+        distToBottom = gameObject.GetComponent<BoxCollider>().bounds.extents.y;
+        distToX = gameObject.GetComponent<BoxCollider>().bounds.extents.x;
+        distToZ = gameObject.GetComponent<BoxCollider>().bounds.extents.z;
 	}
+
+    public bool updateGround()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, distToBottom + 0.1f))
+            return true;
+        else if (Physics.Raycast(transform.position + new Vector3(distToX-0.1f, 0.0f, distToZ-0.1f), Vector3.down, distToBottom + 0.1f))
+            return true;
+        else if (Physics.Raycast(transform.position + new Vector3(-distToX+0.1f, 0.0f, distToZ-0.1f), Vector3.down, distToBottom + 0.1f))
+            return true;
+        else if (Physics.Raycast(transform.position + new Vector3(distToX-0.1f, 0.0f, -distToZ+0.1f), Vector3.down, distToBottom + 0.1f))
+            return true;
+        else if (Physics.Raycast(transform.position + new Vector3(-distToX+0.1f, 0.0f, -distToZ+0.1f), Vector3.down, distToBottom + 0.1f))
+            return true;
+        else
+            return false;
+    }
 
 	void InputControl()
 	{
@@ -63,6 +78,7 @@ public class Player : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+        isGrounded = updateGround();
 		InputControl();
 		Move ();
 	}

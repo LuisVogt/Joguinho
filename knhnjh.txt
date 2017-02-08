@@ -1,0 +1,19 @@
+Morgana:
+	Dano individual
+Survy:
+	Nuvem venenosa
+	Restaurar Movimento
+	Restaurar Ação
+Nynaeve:
+	Cura em área
+Coronel White:
+	Bazooka
+	Granada
+Major Smith:
+	Dano individual Simples	
+	Granada de lentidão
+	Granada Venenosa
+Major Healroot:
+	Cura Individual
+	Restaurar movimento
+	Restaurar Ação
