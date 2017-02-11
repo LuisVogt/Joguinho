@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     private float distToBottom;
     private float distToX;
     private float distToZ;
-
+    private Rigidbody rg;
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
 		direction = new Vector3(0.0f,1.0f,0.0f);
 		horizontalSpeed = 0.0f;
 		isGrounded = false;
+
+        rg = gameObject.GetComponent<Rigidbody>();
 
         distToBottom = gameObject.GetComponent<BoxCollider>().bounds.extents.y;
         distToX = gameObject.GetComponent<BoxCollider>().bounds.extents.x;
@@ -57,7 +59,6 @@ public class Player : MonoBehaviour {
 
 	void Move ()
 	{
-//		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.deltaTime);
 		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.fixedDeltaTime);
 
 		if (isGrounded && Input.GetButton("Jump"))
@@ -67,24 +68,46 @@ public class Player : MonoBehaviour {
 		}
 		if(isGrounded == false)
 		{
-//			verticalSpeed = verticalSpeed - gravity * Time.deltaTime;
 			verticalSpeed = verticalSpeed - gravity * Time.fixedDeltaTime;
-//			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.deltaTime,0.0f);
 			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.fixedDeltaTime,0.0f);
 
 		}
+        
 		direction=new Vector3(0.0f,0.0f,0.0f);
 	}
+
+    void WorkaroundRigidBody()
+    {
+        rg.velocity = new Vector3(0.0f, 0.0f, 0.0f);
+
+        //float tempX, tempY, tempZ;
+        //if (rg.velocity.x > 0 && rg.velocity.x < 0.3f || rg.velocity.x < 0 && rg.velocity.x > -0.3f)
+        //    tempX = 0.0f;
+        //else
+        //    tempX = rg.velocity.x;
+
+        //if (rg.velocity.z > 0 && rg.velocity.z < 0.3f || rg.velocity.z < 0 && rg.velocity.z > -0.3f)
+        //    tempZ = 0.0f;
+        //else
+        //    tempZ = rg.velocity.z;
+
+        //if (rg.velocity.y > 0 && rg.velocity.y < 0.3f || rg.velocity.y < 0 && rg.velocity.y > -0.3f)
+        //    tempY = 0.0f;
+        //else
+        //    tempY = rg.velocity.y;
+    }
 
 	void FixedUpdate()
 	{
         isGrounded = updateGround();
 		InputControl();
 		Move ();
+        WorkaroundRigidBody();
 	}
 
 	// Update is called once per frame
 	void Update () {
+        Debug.Log("RigidBody Velocity:" + rg.velocity);
 //		InputControl();
 //		Move();
 	}
