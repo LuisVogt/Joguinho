@@ -79,22 +79,6 @@ public class Player : MonoBehaviour {
     void WorkaroundRigidBody()
     {
         rg.velocity = new Vector3(0.0f, 0.0f, 0.0f);
-
-        //float tempX, tempY, tempZ;
-        //if (rg.velocity.x > 0 && rg.velocity.x < 0.3f || rg.velocity.x < 0 && rg.velocity.x > -0.3f)
-        //    tempX = 0.0f;
-        //else
-        //    tempX = rg.velocity.x;
-
-        //if (rg.velocity.z > 0 && rg.velocity.z < 0.3f || rg.velocity.z < 0 && rg.velocity.z > -0.3f)
-        //    tempZ = 0.0f;
-        //else
-        //    tempZ = rg.velocity.z;
-
-        //if (rg.velocity.y > 0 && rg.velocity.y < 0.3f || rg.velocity.y < 0 && rg.velocity.y > -0.3f)
-        //    tempY = 0.0f;
-        //else
-        //    tempY = rg.velocity.y;
     }
 
 	void FixedUpdate()
