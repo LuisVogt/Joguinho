@@ -13,12 +13,6 @@ public class Player : MonoBehaviour {
     private float distToX;
     private float distToZ;
     private Rigidbody rg;
-
-	void OnTriggerEnter(Collider other)
-	{
-		isGrounded = true;
-		verticalSpeed = 0.0f;
-	}
 		
 	// Use this for initialization
 	void Start () {
@@ -36,15 +30,30 @@ public class Player : MonoBehaviour {
     public bool updateGround()
     {
         if (Physics.Raycast(transform.position, Vector3.down, distToBottom + 0.1f))
+        {
+            verticalSpeed = 0.0f;
             return true;
+        }
         else if (Physics.Raycast(transform.position + new Vector3(distToX-0.1f, 0.0f, distToZ-0.1f), Vector3.down, distToBottom + 0.1f))
+        {
+            verticalSpeed = 0.0f;
             return true;
+        }
         else if (Physics.Raycast(transform.position + new Vector3(-distToX+0.1f, 0.0f, distToZ-0.1f), Vector3.down, distToBottom + 0.1f))
+        {
+            verticalSpeed = 0.0f;
             return true;
+        }
         else if (Physics.Raycast(transform.position + new Vector3(distToX-0.1f, 0.0f, -distToZ+0.1f), Vector3.down, distToBottom + 0.1f))
+        {
+            verticalSpeed = 0.0f;
             return true;
+        }
         else if (Physics.Raycast(transform.position + new Vector3(-distToX+0.1f, 0.0f, -distToZ+0.1f), Vector3.down, distToBottom + 0.1f))
+        {
+            verticalSpeed = 0.0f;
             return true;
+        }
         else
             return false;
     }
@@ -70,7 +79,6 @@ public class Player : MonoBehaviour {
 		{
 			verticalSpeed = verticalSpeed - gravity * Time.fixedDeltaTime;
 			transform.position = transform.position + new Vector3(0.0f,verticalSpeed * Time.fixedDeltaTime,0.0f);
-
 		}
         
 		direction=new Vector3(0.0f,0.0f,0.0f);
@@ -91,8 +99,6 @@ public class Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("RigidBody Velocity:" + rg.velocity);
-//		InputControl();
-//		Move();
+
 	}
 }
