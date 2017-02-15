@@ -61,20 +61,32 @@ public class Player : MonoBehaviour {
 	void InputControl()
 	{
 		Vector2 tempAxys = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical")*1.75f);
-		direction = direction + new Vector3(1.0f,0.0f,1.0f)  * tempAxys.y;
-		direction = direction + new Vector3(1.0f,0.0f,-1.0f) * tempAxys.x;
+
+        //criar um vector3 pra forward e right e trocar os valores só quando apertar os botões para otimizar
+
+		direction = direction + transform.forward  * tempAxys.y;
+		direction = direction + transform.right * tempAxys.x;
 		horizontalSpeed = tempAxys.magnitude * baseSpeed;
-	}
+
+        if (isGrounded && Input.GetButton("Jump"))
+        {
+            isGrounded = false;
+            verticalSpeed = 5.0f;
+        }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            transform.Rotate(Vector3.up, 90);
+        }
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            transform.Rotate(Vector3.up, -90);
+        }
+    }
 
 	void Move ()
 	{
 		transform.position = transform.position + (direction.normalized * horizontalSpeed * Time.fixedDeltaTime);
 
-		if (isGrounded && Input.GetButton("Jump"))
-		{
-			isGrounded = false;
-			verticalSpeed = 5.0f;
-		}
 		if(isGrounded == false)
 		{
 			verticalSpeed = verticalSpeed - gravity * Time.fixedDeltaTime;
