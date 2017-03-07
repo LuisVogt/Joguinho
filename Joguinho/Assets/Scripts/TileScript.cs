@@ -61,11 +61,14 @@ public class TileScript: MonoBehaviour {
 		for(int i = 0; i < temp;i++){
 			if(hasChild) render = transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
 			else render = gameObject.GetComponent<MeshRenderer>();
-			material = render.material;
-			color=material.GetColor("_Color");
-			alpha = (int)(a*255);
-			color.a=(byte)alpha;
-			material.SetColor("_Color", color);
+            if (render != null)
+            {
+                material = render.material;
+                color = material.GetColor("_Color");
+                alpha = (int)(a * 255);
+                color.a = (byte)alpha;
+                material.SetColor("_Color", color);
+            }
 		}
 	}
 
@@ -124,18 +127,21 @@ public class TileScript: MonoBehaviour {
 		for(int i = 0; i < temp;i++){
 			if(hasChild) render = transform.GetChild(i).gameObject.GetComponent<MeshRenderer>();
 			else render = gameObject.GetComponent<MeshRenderer>();
-			material = render.material;
-			color=material.GetColor("_Color");
-			material.SetFloat("_Mode",4f);
+            if (render != null)
+            {
+                material = render.material;
+                color = material.GetColor("_Color");
+                material.SetFloat("_Mode", 4f);
 
-			material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-			material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-			material.SetInt("_ZWrite", 0);
-			material.DisableKeyword("_ALPHATEST_ON");
-			material.EnableKeyword("_ALPHABLEND_ON");
-			material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-			material.renderQueue = 3000;
-			setTransparency(0);
+                material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                material.SetInt("_ZWrite", 0);
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.EnableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 3000;
+                setTransparency(0);
+            }
 		}
 		if (getTransitionState() != transitionState.DONE)
 		{
