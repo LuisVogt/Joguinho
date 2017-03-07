@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ColectibleInventory : MonoBehaviour {
 
-    [SerializeField]List<GameObject> colectibles;
+    [SerializeField]List<string> colectibles;
 
     public void addCollectible(GameObject colectible)
     {
-        colectibles.Add(colectible);
+        colectibles.Add(colectible.name);
     }
 
     // Use this for initialization
