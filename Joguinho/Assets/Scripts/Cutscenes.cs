@@ -48,7 +48,8 @@ public class Cutscenes : MonoBehaviour {
         playerScript = player.GetComponent<Player>();
         playerScript.enabled =false;
         cutsceneDisplayImage.enabled = true;
-        cutsceneAudioSource.enabled = true;
+        //cutsceneAudioSource.enabled = true;
+        cutsceneAudioSource.Stop();
         cutsceneAudioSource.PlayOneShot(currentAudio, 1.0f);
         iniciado = true;
     }
@@ -59,7 +60,7 @@ public class Cutscenes : MonoBehaviour {
             PostCutscene.SetActive(true);
         playerScript.enabled = true;
         cutsceneDisplayImage.enabled = false;
-        cutsceneAudioSource.enabled = false;
+        //cutsceneAudioSource.enabled = false;
         Destroy(this.gameObject);
     }
 
