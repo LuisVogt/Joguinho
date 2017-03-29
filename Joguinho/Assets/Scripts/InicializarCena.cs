@@ -13,7 +13,9 @@ public class InicializarCena : MonoBehaviour {
 	void Update () {
         if(GameObject.FindGameObjectWithTag("Player")!=null)
         {
-            GameObject.FindGameObjectWithTag("Player").transform.position = PlayerPosition;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            player.transform.position = PlayerPosition;
+            player.GetComponent<StageChecker>().RefreshCurrentLevel();
             Destroy(this.gameObject);
         }
     }

@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
+        GetComponent<StageChecker>().RefreshCurrentLevel();
 		direction = new Vector3(0.0f,1.0f,0.0f);
 		horizontalSpeed = 0.0f;
 		isGrounded = false;
