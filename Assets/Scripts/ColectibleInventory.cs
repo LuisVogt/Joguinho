@@ -4,27 +4,22 @@ using UnityEngine;
 
 public class ColectibleInventory : MonoBehaviour {
 
-    [SerializeField]List<int> collectibles;
+    [SerializeField]List<string> colectibles;
 
-    public void clearCollectibles()
+    public void addCollectible(GameObject colectible)
     {
-        collectibles = new List<int>();
+        colectibles.Add(colectible.name);
     }
 
-    public List<int> getCollectiblesInInventory()
+    // Use this for initialization
+    void Start()
     {
-        return collectibles;
+
     }
 
-    public void addCollectible(int collectible)
+    // Update is called once per frame
+    void Update()
     {
-        collectibles.Add(collectible);
-    }
-    public void addCollectibles(List<int> collectibleArray)
-    {
-        for (int i = 0; i < collectibleArray.Count; i++)
-        {
-            addCollectible(collectibleArray[i]);
-        }
+
     }
 }

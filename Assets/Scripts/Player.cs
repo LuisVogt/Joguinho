@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -108,6 +111,11 @@ public class Player : MonoBehaviour {
 		InputControl();
 		Move ();
         WorkaroundRigidBody();
+        if (this.transform.position.y < -4)
+        {
+            SceneManager.LoadScene("End");
+
+        }
 	}
 
 	// Update is called once per frame
