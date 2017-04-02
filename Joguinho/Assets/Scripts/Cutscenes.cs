@@ -10,7 +10,7 @@ public class Cutscenes : MonoBehaviour {
     public List<AudioClip> cutsceneAudio;
     public List<int> faixasPorCutscene;
     private AudioClip currentAudio;
-    [SerializeField]private int indiceAudioAtual;
+    private int indiceAudioAtual;
     private int indiceImagemAtual;
     private int indiceAudioTotal;
     private Player playerScript;

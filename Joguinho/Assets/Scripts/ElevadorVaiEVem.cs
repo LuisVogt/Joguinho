@@ -8,7 +8,7 @@ public class ElevadorVaiEVem : MonoBehaviour {
     public GameObject pontoA;
     public GameObject pontoB;
     public GameObject Elevador;
-    [SerializeField]private float timePassed;
+    private float timePassed;
     enum estado
     {
         goingToA,
@@ -17,7 +17,7 @@ public class ElevadorVaiEVem : MonoBehaviour {
         waitingInB
     }
 
-    [SerializeField]private estado estadoAtual;
+    private estado estadoAtual;
 
 	// Use this for initialization
 	void Start () {

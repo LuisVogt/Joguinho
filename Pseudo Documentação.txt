@@ -1,0 +1,52 @@
+LevelManager(2 scripts):
+	Fazer um prefab com todos os elementos necessários para o seu funcionamento (Modelos, colliders, scripts) e colocar esse prefab no slot no script do LevelManager. Depois disso, se o botão estiver marcado, colocar as coordenadas X, Y e Z, apertar o botão "Cria os objetos" cria uma cópia do objeto nas coordenadas dadas.
+Se o botão estiver desmarcado, são necessárias duas coodernadas. Ao apertar o botão "Cria os objetos", cópias do objeto são criadas entre os dois pontos em formato de um paralelepípedo. A variável "Distancia entre objetos" define qual a distância (em unidades de distância padrão da unity[UPU]) os objetos criados ao apertar "cria os objetos" estarão um do outro.
+Player Distance To Fall - Distância mínima em UPU entre o jogador e os blocos para os blocos começarem a cair.
+
+TileScript(Script):
+	Objeto precisa ter a tag "Transição"
+	Junto com o LevelManager, faz os blocos com esse script cairem. Possui 6 variáveis ajustáveis:
+fallDistance - A distância que o bloco vai cair. Se for 5, a transição do bloco começa 5 UPU de distância da posição original e ele transita até essa posição.
+Porcentagem Inicial de Transparência - A porcentagem inicial de transparência (entre 0 e 1).
+Transition Speed - Velocidade inicial da transição.
+Transition Acceleration - Aceleração da transição.
+Transition - Onde o bloco começa. Up faz ele começar em cima e ir pra baixo, Down faz ele começar em baixo e ir pra baixo.
+Speed Type - muda o a transição entre velocidade constante (Linear) e aceleração (Acceleration)
+
+Tocar faixa de áudio ao passar por lugar(Prefab):
+	Usar o prefab voiceOverOnEnter, colocar a faixa no script CriarVoiceOver, no campo Audio e ajustar o tamanho da box collider de acordo com o necessário.
+
+Salvar/Carregar o jogo(???):
+	Criar um botão que chama a função SaveGame/LoadGame no script SaveLoadManager contida no prefab Save_Load_Manager. Cada cena precisa de um EventManager para os botões funcionarem.
+
+Bloco Elevador(Prefab):
+	Script que faz o bloco se mover na horizontal quando o jogador está em cima. Volta para a posição inicial quando o jogador não está em cima. Possui duas variáveis:
+Speed - A velocidade que o bloco sobe/desce
+Y Target - Distância vertical que o elevador se move, em UPU. Um número positivo faz o bloco subir, e um número negativo faz o bloco descer.
+
+Elevador Pro Inverno(Script):
+	Faz um bloco que cai depois do jogador ficar em cima dele por um período de tempo. Possui 3 variáveis ajustáveis:
+TimeInitial - Tempo em segundos que o jogador precisa estar em cima para o bloco cair.
+Gravity - Gravidade para o bloco cair. Padrão de 9.8
+KillBlockHeight - A altura que o bloco precisa estar para ser deletado do mundo.
+
+Elevador Vai e Vem(Prefab):
+	Elevador que varia entre dois pontos, esperando uma quantidade de segundos quando chega em um ponto antes de ir para o próximo. O modelo do elevador em si é uma child do prefab, chamada de Elevador. Possui 4 parâmetros ajustáveis:
+Speed - Velocidade entre os pontos.
+Rest Time - Tempo de espera em cada ponto antes de ir para o outro, em segundos.
+Ponto A e B- Objetos que indicam onde os dois pontos de descanso do bloco são. As coordenadas dele são em relação ao objeto ElevadorVaiEVem
+
+Cutscene Manager(Prefab):
+	Ativa uma cutscene quando o jogador entra no trigger. Ajustar o tamanho do box collider de acordo com o necessário. Possuí 4 atributos:
+Cutscene Images - As imagens que aparecerão na cutscene. Colocar o número de imagens no campo Size e em seguida colocar as imagens em ordem na lista que aparecer.
+Cutscene Audio - Mesma coisa que Cutscene Images, mas ao invés de colocar as imagens, colocar os áudios.
+Faixas por cutscene - Colocar quantas faixas de audio tocarão por imagem. Size deverá ter o mesmo tamanho que em Cutscene Images, e cada posição da lista indica quantos audios tocarão por imagem, permitindo mais de um áudio por imagem.
+Post Cutscene - Um objeto que permanecerá desativo até a cutscene acabar. Projetado para fazer a transição de níveis com o prefab Finalizador de Cena, mas pode ser usado com qualquer objeto.
+
+FinalizadorDeCena(Prefab):
+	Faz com que o jogador seja teleportado para a próxima cena quando entra no trigger. Ajustar o collider de acordo. Apenas um atributo:
+Scene Name - Nome da cena para o qual o jogador será teleportado.
+
+Inicializador de cena(Prefab):
+	Configura o que precisa ser configurado no começo da cena. Por enquanto apenas muda a posição do jogador. Apenas um atributo:
+Player Position - Define a posição inicial do jogador quando ele entrar na cena.

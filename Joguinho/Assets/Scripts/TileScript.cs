@@ -12,16 +12,17 @@ public class TileScript: MonoBehaviour {
 	Vector3 pointFinish;
 
 	Transform[] child;
-	public bool hasChild=false;
+	bool hasChild=false;
 
 	MeshRenderer render;
 	Material material;
 
 	Color32 color;
 
-	public float doit;
+	float doit;
 	int alpha;
-	public float dist=1;
+    public float fallDistance = 5;
+    float dist=1;
 	float transitionTime = 0;
 	public float porcentagemInicialDeTransparencia = 0;
 	public float transitionSpeed = 1.0f;
@@ -29,7 +30,7 @@ public class TileScript: MonoBehaviour {
 	public transitionState transition = transitionState.UP;
 	public transitionSpeedType speedType = transitionSpeedType.ACCELERATION;
 
-	public bool Falling = false;
+	bool Falling = false;
 
 	public bool isFalling()
 	{
@@ -140,7 +141,7 @@ public class TileScript: MonoBehaviour {
                 material.EnableKeyword("_ALPHABLEND_ON");
                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = 3000;
-                setTransparency(0);
+                setTransparency(porcentagemInicialDeTransparencia);
             }
 		}
 		if (getTransitionState() != transitionState.DONE)
@@ -149,7 +150,7 @@ public class TileScript: MonoBehaviour {
 			if(getTransitionState() == transitionState.UP)
 			{
 				pointStart = pointFinish;
-				pointStart.y = pointStart.y + 5;
+				pointStart.y = pointStart.y + fallDistance;
 			}
 
 			transform.position = pointStart;

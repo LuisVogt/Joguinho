@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ElevadorProInferno : MonoBehaviour {
     public float timeInitial;
-    [SerializeField] private float time;
-    [SerializeField] private bool counting;
-    [SerializeField] private bool falling;
+    private float time;
+    private bool counting;
+    private bool falling;
     private float fallSpeed = 0.0f;
-    public float gravity;
+    public float gravity = 9.8f;
     public float killBlockHeight;
 
     void resetTime()
