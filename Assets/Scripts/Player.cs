@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
     private float distToBottom;
     private float distToX;
     private float distToZ;
-    private Rigidbody rg;
+    public Rigidbody rg;
 		
 	// Use this for initialization
 	void Start () {
